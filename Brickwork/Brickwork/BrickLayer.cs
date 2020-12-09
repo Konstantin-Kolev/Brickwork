@@ -5,6 +5,9 @@ namespace Brickwork
 {
     public class BrickLayer
     {
+        //Properties that hold the size of the layer for easier to read and write code.
+        private int rows;
+        private int columns;
         //The array which holds the values that represent the layout of the bricks in the layer. 
         private int[,] layout;
 
@@ -29,6 +32,8 @@ namespace Brickwork
                 m = input[1];
             }
             this.Layout = new int[n, m];
+            this.rows = n;
+            this.columns = m;
         }
 
         //Method, used for validating the values used for the size of the array Layout.
@@ -52,15 +57,15 @@ namespace Brickwork
         //If the input is invalid the method requesta new one from the user.
         public void EnterLayout()
         {
-            for (int i = 0; i < this.Layout.GetLength(0); i++)
+            for (int i = 0; i < this.rows; i++)
             {
                 int[] input = Console.ReadLine()
                                      .Split(' ')
                                      .Select(int.Parse)
                                      .ToArray();
-                for (int j = 0; j < this.Layout.GetLength(1); j++)
+                for (int j = 0; j < this.columns; j++)
                 {
-                    while (input.Length != this.Layout.GetLength(1))
+                    while (input.Length != this.columns)
                     {
                         Console.WriteLine("The input must be the same as the set size");
                         input = Console.ReadLine()
@@ -84,11 +89,11 @@ namespace Brickwork
         //If any values are found to be equal the whole layout is marked as invalid.
         private bool ValidateLayout()
         {
-            if (this.Layout.GetLength(0) == 2)
+            if (this.rows == 2)
             {
-                for (int i = 0; i < this.Layout.GetLength(0); i++)
+                for (int i = 0; i < this.rows; i++)
                 {
-                    for (int j = 0; j < this.Layout.GetLength(1) - 2; j++)
+                    for (int j = 0; j < this.columns - 2; j++)
                     {
                         if (this.Layout[i, j] == this.Layout[i, j + 2])
                         {
@@ -99,9 +104,9 @@ namespace Brickwork
             }
             else
             {
-                for (int i = 0; i < this.Layout.GetLength(0) - 2; i++)
+                for (int i = 0; i < this.rows - 2; i++)
                 {
-                    for (int j = 0; j < this.Layout.GetLength(1) - 2; j++)
+                    for (int j = 0; j < this.columns - 2; j++)
                     {
                         if (this.Layout[i, j] == this.Layout[i + 2, j])
                         {
@@ -121,14 +126,59 @@ namespace Brickwork
         //Method that prints the array Layout in the console.
         public void PrintLayout()
         {
-            for (int i = 0; i < this.Layout.GetLength(0); i++)
+            for (int i = 0; i < this.rows; i++)
             {
-                for (int j = 0; j < this.Layout.GetLength(1); j++)
+                for (int j = 0; j < this.columns; j++)
                 {
                     Console.Write("{0} ", this.Layout[i, j]);
                 }
                 Console.WriteLine();
             }
+        }
+
+        public BrickLayer GenerateNextLayer()
+        {
+            BrickLayer nextLayer = new BrickLayer(this.rows, this.columns);
+            int[,] solution = new int[this.rows, this.columns];
+            int brickNumber = 1;
+            for (int i = 0; i < this.rows; i++)
+            {
+                for (int j = 0; j < this.columns; j++)
+                {
+                    if (solution[i, j] == 0)
+                    {
+                        MarkBrick(i, j, solution, brickNumber++);
+                    }
+                }
+            }
+
+            nextLayer.Layout = solution;
+            return nextLayer;
+        }
+
+        private void MarkBrick(int i, int j, int[,] layer, int brickNumber)
+        {
+            if (j + 1 < this.columns)
+            {
+                if (this.Layout[i, j] != this.Layout[i, j + 1])
+                {
+                    layer[i, j] = brickNumber;
+                    layer[i, j + 1] = brickNumber;
+                    return;
+                }
+            }
+
+            if (i + 1 < this.rows)
+            {
+                if(this.Layout[i,j]!=this.layout[i+1,j])
+                {
+                    layer[i, j] = brickNumber;
+                    layer[i + 1, j] = brickNumber;
+                    return;
+                }
+            }
+
+            
         }
     }
 }

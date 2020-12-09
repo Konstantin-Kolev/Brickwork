@@ -15,7 +15,10 @@ namespace Brickwork
             int m = input[1];
             BrickLayer firstLayer = new BrickLayer(n, m);
             firstLayer.EnterLayout();
-            firstLayer.PrintLayout();
+            BrickLayer secondLayer = firstLayer.GenerateNextLayer();
+            Console.WriteLine();
+            secondLayer.PrintLayout();
+        
         }
     }
 }
