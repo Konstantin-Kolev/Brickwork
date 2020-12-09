@@ -34,7 +34,7 @@ namespace Brickwork
             {
                 return false;
             }
-            else if(size%2!=0)
+            else if (size % 2 != 0)
             {
                 return false;
             }
@@ -52,7 +52,7 @@ namespace Brickwork
                                      .ToArray();
                 for (int j = 0; j < this.Layout.GetLength(1); j++)
                 {
-                    while(input.Length!=this.Layout.GetLength(1))
+                    while (input.Length != this.Layout.GetLength(1))
                     {
                         Console.WriteLine("The input must be the same as the set size");
                         input = Console.ReadLine()
@@ -63,6 +63,48 @@ namespace Brickwork
                     this.Layout[i, j] = input[j];
                 }
             }
+
+            if (!this.ValidateLayout())
+            {
+                Console.WriteLine("This layout is invalid. You cannot have a single brick span more than 2 spaces in a row/column.");
+                this.EnterLayout();
+            }
+        }
+
+        private bool ValidateLayout()
+        {
+            if (this.Layout.GetLength(0) == 2)
+            {
+                for (int i = 0; i < this.Layout.GetLength(0); i++)
+                {
+                    for (int j = 0; j < this.Layout.GetLength(1) - 2; j++)
+                    {
+                        if (this.Layout[i, j] == this.Layout[i, j + 2])
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < this.Layout.GetLength(0) - 2; i++)
+                {
+                    for (int j = 0; j < this.Layout.GetLength(1) - 2; j++)
+                    {
+                        if (this.Layout[i, j] == this.Layout[i + 2, j])
+                        {
+                            return false;
+                        }
+                        if (this.Layout[i, j] == this.Layout[i, j + 2])
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            return true;
         }
 
         public void PrintLayout()
@@ -71,7 +113,7 @@ namespace Brickwork
             {
                 for (int j = 0; j < this.Layout.GetLength(1); j++)
                 {
-                    Console.Write("{0} ",this.Layout[i,j]);
+                    Console.Write("{0} ", this.Layout[i, j]);
                 }
                 Console.WriteLine();
             }
