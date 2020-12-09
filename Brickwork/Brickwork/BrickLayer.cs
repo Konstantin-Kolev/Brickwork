@@ -5,6 +5,7 @@ namespace Brickwork
 {
     public class BrickLayer
     {
+        //The array which holds the values that represent the layout of the bricks in the layer. 
         private int[,] layout;
 
         public int[,] Layout
@@ -13,6 +14,8 @@ namespace Brickwork
             set { layout = value; }
         }
 
+        //Constructor for the class which implements validation for the size of the array Layout.
+        //If the values are invalid it reqeusts new values from the user.
         public BrickLayer(int n, int m)
         {
             while (!this.ValidateSize(n) || !this.ValidateSize(m))
@@ -28,6 +31,8 @@ namespace Brickwork
             this.Layout = new int[n, m];
         }
 
+        //Method, used for validating the values used for the size of the array Layout.
+        //The values are checked to be in bounds for the given size and to be even.
         private bool ValidateSize(int size)
         {
             if (size < 2 || size > 100)
@@ -42,6 +47,9 @@ namespace Brickwork
             return true;
         }
 
+        //Method that takes the input from the user and writes in the array Layout.
+        //Validation checks if the input is the same size as the given values for N and M and if there are bricks spanning 3 rows/columns.
+        //If the input is invalid the method requesta new one from the user.
         public void EnterLayout()
         {
             for (int i = 0; i < this.Layout.GetLength(0); i++)
@@ -71,6 +79,9 @@ namespace Brickwork
             }
         }
 
+        //Method that validates the layout of the bricks
+        //It checks to see if any value is the same as the one 2 spaces from it in its row or column.
+        //If any values are found to be equal the whole layout is marked as invalid.
         private bool ValidateLayout()
         {
             if (this.Layout.GetLength(0) == 2)
@@ -107,6 +118,7 @@ namespace Brickwork
             return true;
         }
 
+        //Method that prints the array Layout in the console.
         public void PrintLayout()
         {
             for (int i = 0; i < this.Layout.GetLength(0); i++)
