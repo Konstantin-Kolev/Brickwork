@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Brickwork
 {
     public class BrickLayer
     {
-        private int[,] layer;
+        private int[,] layout;
 
-        public int[,] Layer
+        public int[,] Layout
         {
-            get { return layer; }
-            set { layer = value; }
+            get { return layout; }
+            set { layout = value; }
         }
 
         public BrickLayer(int n, int m)
@@ -20,11 +18,14 @@ namespace Brickwork
             while (!this.ValidateSize(n) || !this.ValidateSize(m))
             {
                 Console.WriteLine("Invalid values for N or M. The values must br less than 100, even and positive.");
-                int[] input = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
+                int[] input = Console.ReadLine()
+                                     .Split(' ')
+                                     .Select(int.Parse)
+                                     .ToArray();
                 n = input[0];
                 m = input[1];
             }
-            this.Layer = new int[n, m];
+            this.Layout = new int[n, m];
         }
 
         private bool ValidateSize(int size)
@@ -39,6 +40,21 @@ namespace Brickwork
             }
 
             return true;
+        }
+
+        public void EnterLayout()
+        {
+            for (int i = 0; i < this.Layout.GetLength(0); i++)
+            {
+                int[] input = Console.ReadLine()
+                                     .Split(' ')
+                                     .Select(int.Parse)
+                                     .ToArray();
+                for (int j = 0; j < this.Layout.GetLength(1); j++)
+                {
+                    this.Layout[i, j] = input[j];
+                }
+            }
         }
     }
 }

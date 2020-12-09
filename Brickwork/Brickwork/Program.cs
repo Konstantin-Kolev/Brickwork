@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Brickwork
 {
@@ -6,7 +7,14 @@ namespace Brickwork
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            int[] input = Console.ReadLine()
+                                 .Split(' ')
+                                 .Select(int.Parse)
+                                 .ToArray();
+            int n = input[0];
+            int m = input[1];
+            BrickLayer firstLayer = new BrickLayer(n, m);
+            firstLayer.EnterLayout();
         }
     }
 }
