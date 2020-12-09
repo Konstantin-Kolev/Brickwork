@@ -52,8 +52,28 @@ namespace Brickwork
                                      .ToArray();
                 for (int j = 0; j < this.Layout.GetLength(1); j++)
                 {
+                    while(input.Length!=this.Layout.GetLength(1))
+                    {
+                        Console.WriteLine("The input must be the same as the set size");
+                        input = Console.ReadLine()
+                                     .Split(' ')
+                                     .Select(int.Parse)
+                                     .ToArray();
+                    }
                     this.Layout[i, j] = input[j];
                 }
+            }
+        }
+
+        public void PrintLayout()
+        {
+            for (int i = 0; i < this.Layout.GetLength(0); i++)
+            {
+                for (int j = 0; j < this.Layout.GetLength(1); j++)
+                {
+                    Console.Write("{0} ",this.Layout[i,j]);
+                }
+                Console.WriteLine();
             }
         }
     }
