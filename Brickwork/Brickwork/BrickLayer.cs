@@ -18,7 +18,7 @@ namespace Brickwork
         }
 
         //Constructor for the class which implements validation for the size of the array Layout.
-        //If the values are invalid it reqeusts new values from the user.
+        //If the values are invalid it requests new values from the user.
         public BrickLayer(int n, int m)
         {
             while (!this.ValidateSize(n) || !this.ValidateSize(m))
@@ -54,12 +54,13 @@ namespace Brickwork
 
         //Method that takes the input from the user and writes in the array Layout.
         //Validation checks if the input is the same size as the given values for N and M and if there are bricks spanning 3 rows/columns.
-        //If the input is invalid the method requesta new one from the user.
+        //If the input is invalid the method request a new one from the user.
         public void EnterLayout()
         {
             for (int i = 0; i < this.rows; i++)
             {
                 int[] input = Console.ReadLine()
+                                     .TrimEnd()
                                      .Split(' ')
                                      .Select(int.Parse)
                                      .ToArray();
@@ -69,6 +70,7 @@ namespace Brickwork
                     {
                         Console.WriteLine("The input must be the same as the set size");
                         input = Console.ReadLine()
+                                     .TrimEnd()
                                      .Split(' ')
                                      .Select(int.Parse)
                                      .ToArray();
