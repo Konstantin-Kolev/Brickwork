@@ -33,6 +33,7 @@ namespace Brickwork
                 n = input[0];
                 m = input[1];
             }
+
             this.Layout = new int[n, m];
             this.rows = n;
             this.columns = m;
@@ -140,55 +141,92 @@ namespace Brickwork
             }
         }
 
-        //Method that generates the next layer of bricks based on the current one
-        //Every position is checked if it is already used, if it isn't it is marked.
-        public BrickLayer GenerateNextLayer()
+        public bool PlaceBricks(int[,] layer, int brickNumber)
         {
-            BrickLayer nextLayer = new BrickLayer(this.rows, this.columns);
-            int[,] solution = new int[this.rows, this.columns];
-            int brickNumber = 1;
+            if (brickNumber > (this.rows * this.columns) / 2)
+            {
+                return true;
+            }
+
             for (int i = 0; i < this.rows; i++)
             {
                 for (int j = 0; j < this.columns; j++)
                 {
-                    if (solution[i, j] == 0)
+                    if (layer[i, j] == 0)
                     {
-                        MarkBrick(i, j, solution, brickNumber++);
+                        if (CanPlaceRight(layer, i, j))
+                        {
+                            layer[i, j] = brickNumber;
+                            layer[i, j + 1] = brickNumber;
+                            if (PlaceBricks(layer, brickNumber + 1))
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                layer[i, j] = 0;
+                                layer[i, j + 1] = 0;
+                            }
+                        }
+                        else if (CanPlaceDown(layer, i, j))
+                        {
+                            layer[i, j] = brickNumber;
+                            layer[i + 1, j] = brickNumber;
+                            if (PlaceBricks(layer, brickNumber + 1))
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                layer[i, j] = 0;
+                                layer[i + 1, j] = 0;
+                            }
+                        }
                     }
                 }
             }
 
-            nextLayer.Layout = solution;
-            return nextLayer;
+            return false;
         }
 
-        //Method that marks new brick in a layer.
-        //The method used the coordinates of the given position and the ones next to it.
-        //It checks if the same positions in the currrent layer are different and if they are the method marks the brick in the new layer on those positions.
-        //If they are the same the method does the same algorythm looking at the position bellow the given one.
-        private void MarkBrick(int i, int j, int[,] layer, int brickNumber)
+        private bool CanPlaceRight(int[,] layer, int row, int column)
         {
-            if (j + 1 < this.columns)
+            if (column + 1 >= this.columns)
             {
-                if (this.Layout[i, j] != this.Layout[i, j + 1])
-                {
-                    layer[i, j] = brickNumber;
-                    layer[i, j + 1] = brickNumber;
-                    return;
-                }
+                return false;
             }
 
-            if (i + 1 < this.rows)
+            if (layer[row, column + 1] != 0)
             {
-                if(this.Layout[i,j]!=this.layout[i+1,j])
-                {
-                    layer[i, j] = brickNumber;
-                    layer[i + 1, j] = brickNumber;
-                    return;
-                }
+                return false;
             }
 
-            
+            if (this.Layout[row, column] == this.Layout[row, column + 1])
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool CanPlaceDown(int[,] layer, int row, int column)
+        {
+            if (row + 1 >= this.rows)
+            {
+                return false;
+            }
+
+            if (layer[row + 1, column] != 0)
+            {
+                return false;
+            }
+
+            if (this.Layout[row, column] == this.Layout[row + 1, column])
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

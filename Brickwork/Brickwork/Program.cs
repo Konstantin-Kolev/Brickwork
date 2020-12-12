@@ -16,9 +16,17 @@ namespace Brickwork
             int m = input[1];
             BrickLayer firstLayer = new BrickLayer(n, m);
             firstLayer.EnterLayout();
-            BrickLayer secondLayer = firstLayer.GenerateNextLayer();
-            Console.WriteLine();
-            secondLayer.PrintLayout();
+            BrickLayer secondLayer = new BrickLayer(firstLayer.Layout.GetLength(0), firstLayer.Layout.GetLength(1));
+            if(firstLayer.PlaceBricks(secondLayer.Layout,1))
+            {
+                Console.WriteLine();
+                secondLayer.PrintLayout();
+            }
+            else
+            {
+                Console.WriteLine("-1");
+                Console.WriteLine("There is no solution");
+            }
         
         }
     }
