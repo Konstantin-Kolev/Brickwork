@@ -8,6 +8,7 @@ namespace Brickwork
         static void Main(string[] args)
         {
             int[] input = Console.ReadLine()
+                                 .TrimEnd()
                                  .Split(' ')
                                  .Select(int.Parse)
                                  .ToArray();

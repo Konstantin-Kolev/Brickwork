@@ -8,6 +8,7 @@ namespace Brickwork
         //Properties that hold the size of the layer for easier to read and write code.
         private int rows;
         private int columns;
+
         //The array which holds the values that represent the layout of the bricks in the layer. 
         private int[,] layout;
 
@@ -25,6 +26,7 @@ namespace Brickwork
             {
                 Console.WriteLine("Invalid values for N or M. The values must br less than 100, even and positive.");
                 int[] input = Console.ReadLine()
+                                     .TrimEnd()
                                      .Split(' ')
                                      .Select(int.Parse)
                                      .ToArray();
@@ -138,6 +140,8 @@ namespace Brickwork
             }
         }
 
+        //Method that generates the next layer of bricks based on the current one
+        //Every position is checked if it is already used, if it isn't it is marked.
         public BrickLayer GenerateNextLayer()
         {
             BrickLayer nextLayer = new BrickLayer(this.rows, this.columns);
@@ -158,6 +162,10 @@ namespace Brickwork
             return nextLayer;
         }
 
+        //Method that marks new brick in a layer.
+        //The method used the coordinates of the given position and the ones next to it.
+        //It checks if the same positions in the currrent layer are different and if they are the method marks the brick in the new layer on those positions.
+        //If they are the same the method does the same algorythm looking at the position bellow the given one.
         private void MarkBrick(int i, int j, int[,] layer, int brickNumber)
         {
             if (j + 1 < this.columns)
