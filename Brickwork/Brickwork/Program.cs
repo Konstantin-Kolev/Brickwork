@@ -39,6 +39,19 @@ namespace Brickwork
             {
                 Console.WriteLine();
                 secondLayer.PrintLayout();
+                Console.WriteLine();
+
+                //Creating an output with the bricks surrounded and printing it.
+                string[,] outlinedOutput = secondLayer.GenerateOutputWithSurround();
+
+                for (int i = 0; i < outlinedOutput.GetLength(0); i++)
+                {
+                    for (int j = 0; j < outlinedOutput.GetLength(1); j++)
+                    {
+                        Console.Write(outlinedOutput[i,j]);
+                    }
+                    Console.WriteLine();
+                }
             }
             else
             {
