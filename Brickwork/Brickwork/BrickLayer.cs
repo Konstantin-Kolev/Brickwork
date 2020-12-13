@@ -268,5 +268,177 @@ namespace Brickwork
 
             return true;
         }
+
+        /// <summary>
+        /// <para>Creates a new array that contains the layout of the layer with each brick surrounded by asterisks.</para>
+        /// <para>The numbers within each brick are separated by a dash</para>
+        /// </summary>
+        /// <returns>Returns a 2D-array of type <c>string</c> with the formated layout.</returns>
+        public string[,] GenerateOutputWithSurround()
+        {
+            string[,] output = new string[(this.rows * 2) + 1, (this.columns * 2) + 1];
+
+            for (int i = 0; i < this.rows; i++)
+            {
+                for (int j = 0; j < this.columns; j++)
+                {
+                    if (j < this.columns - 1)
+                    {
+                        if (i < this.rows - 1)
+                        {
+                            if(this.Layout[i,j]==this.Layout[i,j+1])
+                            {
+                                MarkRight(output, i, j);
+                                MarkLeft(output, i, j + 1);
+                            }
+                            else if (this.Layout[i,j]==this.Layout[i+1,j])
+                            {
+                                MarkDown(output, i, j);
+                                MarkUp(output, i + 1, j);
+                            }
+                        }
+                        else if (this.Layout[i,j]==this.Layout[i,j+1])
+                        {
+                            MarkRight(output, i, j);
+                            MarkLeft(output, i, j + 1);
+                        }
+                    }
+                    else if(i<this.rows-1)
+                    {
+                        if(this.layout[i,j]==this.Layout[i+1,j])
+                        {
+                            MarkDown(output, i, j);
+                            MarkUp(output, i + 1, j);
+                        }
+                    }
+                }
+            }
+
+            return output;
+        }
+
+        /// <summary>
+        /// <para>Marks the given position with the corresponding value from the layout and surrounds it with asterisks.</para>
+        /// <para>Places a dash to the right to connect with the other part of the brick.</para> 
+        /// </summary>
+        /// <param name="output">The 2D-array containing the formated output.</param>
+        /// <param name="row">The number of the row of the current value.</param>
+        /// <param name="column">The number of the column of the current value.</param>
+        private void MarkRight(string[,] output, int row, int column)
+        {
+            //The indexes that match the postion of the element in the char array.
+            int outputRow = row * 2 + 1;
+            int outputColumn = column * 2 + 1;
+
+            //Writing the symbol of the value from the layer in the char array.
+            output[outputRow, outputColumn] = this.Layout[row, column].ToString();
+
+            //Marking the positions above the current value.
+            output[outputRow - 1, outputColumn - 1] = "*";
+            output[outputRow - 1, outputColumn] = "*";
+            output[outputRow - 1, outputColumn + 1] = "*";
+
+            //Marking the posiotns on each side of the current value.
+            output[outputRow, outputColumn - 1] = "*";
+            output[outputRow, outputColumn + 1] = "-";
+
+            //Marking the postions below the current value.
+            output[outputRow + 1, outputColumn - 1] = "*";
+            output[outputRow + 1, outputColumn] = "*";
+            output[outputRow + 1, outputColumn + 1] = "*";
+        }
+
+        /// <summary>
+        /// <para>Marks the given position with the corresponding value from the layout and surrounds it with asterisks.</para>
+        /// <para>Places a dash to the left to connect with the other part of the brick.</para> 
+        /// </summary>
+        /// <param name="output">The 2D-array containing the formated output.</param>
+        /// <param name="row">The number of the row of the current value.</param>
+        /// <param name="column">The number of the column of the current value.</param>
+        private void MarkLeft(string[,] output, int row, int column)
+        {
+            //The indexes that match the postion of the element in the char array.
+            int outputRow = row * 2 + 1;
+            int outputColumn = column * 2 + 1;
+
+            //Writing the symbol of the value from the layer in the char array.
+            output[outputRow, outputColumn] = this.Layout[row, column].ToString();
+
+            //Marking the positions above the current value.
+            output[outputRow - 1, outputColumn - 1] = "*";
+            output[outputRow - 1, outputColumn] = "*";
+            output[outputRow - 1, outputColumn + 1] = "*";
+
+            //Marking the posiotns on each side of the current value.
+            output[outputRow, outputColumn - 1] = "-";
+            output[outputRow, outputColumn + 1] = "*";
+
+            //Marking the postions below the current value.
+            output[outputRow + 1, outputColumn - 1] = "*";
+            output[outputRow + 1, outputColumn] = "*";
+            output[outputRow + 1, outputColumn + 1] = "*";
+        }
+
+        /// <summary>
+        /// <para>Marks the given position with the corresponding value from the layout and surrounds it with asterisks.</para>
+        /// <para>Places a dash below to connect with the other part of the brick.</para> 
+        /// </summary>
+        /// <param name="output">The 2D-array containing the formated output.</param>
+        /// <param name="row">The number of the row of the current value.</param>
+        /// <param name="column">The number of the column of the current value.</param>
+        private void MarkDown(string[,] output, int row, int column)
+        {
+            //The indexes that match the postion of the element in the char array.
+            int outputRow = row * 2 + 1;
+            int outputColumn = column * 2 + 1;
+
+            //Writing the symbol of the value from the layer in the char array.
+            output[outputRow, outputColumn] = this.Layout[row, column].ToString();
+
+            //Marking the positions above the current value.
+            output[outputRow - 1, outputColumn - 1] = "*";
+            output[outputRow - 1, outputColumn] = "*";
+            output[outputRow - 1, outputColumn + 1] = "*";
+
+            //Marking the posiotns on each side of the current value.
+            output[outputRow, outputColumn - 1] = "*";
+            output[outputRow, outputColumn + 1] = "*";
+
+            //Marking the postions below the current value.
+            output[outputRow + 1, outputColumn - 1] = "*";
+            output[outputRow + 1, outputColumn] = "-";
+            output[outputRow + 1, outputColumn + 1] = "*";
+        }
+
+        /// <summary>
+        /// <para>Marks the given position with the corresponding value from the layout and surrounds it with asterisks.</para>
+        /// <para>Places a dash above to connect with the other part of the brick.</para> 
+        /// </summary>
+        /// <param name="output">The 2D-array containing the formated output.</param>
+        /// <param name="row">The number of the row of the current value.</param>
+        /// <param name="column">The number of the column of the current value.</param>
+        private void MarkUp(string[,] output, int row, int column)
+        {
+            //The indexes that match the postion of the element in the char array.
+            int outputRow = row * 2 + 1;
+            int outputColumn = column * 2 + 1;
+
+            //Writing the symbol of the value from the layer in the char array.
+            output[outputRow, outputColumn] = this.Layout[row, column].ToString();
+
+            //Marking the positions above the current value.
+            output[outputRow - 1, outputColumn - 1] = "*";
+            output[outputRow - 1, outputColumn] = "-";
+            output[outputRow - 1, outputColumn + 1] = "*";
+
+            //Marking the posiotns on each side of the current value.
+            output[outputRow, outputColumn - 1] = "*";
+            output[outputRow, outputColumn + 1] = "*";
+
+            //Marking the postions below the current value.
+            output[outputRow + 1, outputColumn - 1] = "*";
+            output[outputRow + 1, outputColumn] = "*";
+            output[outputRow + 1, outputColumn + 1] = "*";
+        }
     }
 }
